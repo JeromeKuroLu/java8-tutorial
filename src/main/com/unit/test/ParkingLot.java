@@ -15,6 +15,10 @@ public class ParkingLot implements Anchorable {
         this.parkedCarList = new ArrayList<>();
     }
 
+    public int getAvailableSpacesNum() {
+        return availableSpacesNum;
+    }
+
     @Override
     public String park(Car car) {
         if (hasCar(car.getNum())) {
