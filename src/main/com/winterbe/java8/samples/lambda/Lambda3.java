@@ -61,6 +61,7 @@ public class Lambda3 {
         // Comparators
 
         Comparator<Person> comparator = (p1, p2) -> p1.firstName.compareTo(p2.firstName);
+        Comparator<Person> comparator1 = Comparator.comparing(Person::getFirstName);
 
         Person p1 = new Person("John", "Doe");
         Person p2 = new Person("Alice", "Wonderland");
