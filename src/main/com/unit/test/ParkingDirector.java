@@ -16,7 +16,7 @@ public class ParkingDirector implements Printable {
 
 
     @Override
-    public String print(int layerIndex) {
-        return parkingManagerList.stream().map(manager -> manager.print(layerIndex)).reduce((s1, s2) -> s1 + s2).orElse("");
+    public String print(int layerIndex, PrintFormatter formatter) {
+        return parkingManagerList.stream().map(m -> formatter.format(layerIndex, m.getStatisticData())).reduce((s1, s2) -> s1 + s2).orElse("");
     }
 }

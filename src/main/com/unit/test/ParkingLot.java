@@ -3,7 +3,7 @@ package com.unit.test;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ParkingLot implements Anchorable, Statistic, Printable {
+public class ParkingLot implements Anchorable, Statistic {
     private int totalSpaceNum;
     private int availableSpacesNum;
     private List<Car> parkedCarList;
@@ -24,6 +24,11 @@ public class ParkingLot implements Anchorable, Statistic, Printable {
         return parkedCarList.size();
     }
 
+    @Override
+    public String getStatisticData() {
+        return "P " + getAvailableSpacesNum() + " " + getParkedCarNum() + SplitSignalConstant.PARKING_LOT_SPLIT;
+    }
+
     public double getLeftSpaceRatio() {
         return availableSpacesNum / (double) totalSpaceNum;
     }
@@ -35,7 +40,7 @@ public class ParkingLot implements Anchorable, Statistic, Printable {
         } else if (isAvailable()) {
             parkedCarList.add(car);
             availableSpacesNum--;
-            return String.valueOf(parkedCarList.size() - 1) + "~" + car.getNum();
+            return String.valueOf(parkedCarList.size() - 1) + SplitSignalConstant.TICKET_SPLIT + car.getNum();
         }
         throw new NoAvailableParkingSpaceException();
     }
@@ -43,7 +48,7 @@ public class ParkingLot implements Anchorable, Statistic, Printable {
     @Override
     public Car pickUp(String ticket) {
         if (ticket != null) {
-            String[] spaceIndexAndCarNum = ticket.split("~");
+            String[] spaceIndexAndCarNum = ticket.split(SplitSignalConstant.TICKET_SPLIT);
             String carNum = spaceIndexAndCarNum[1];
             int ticketIndex = Integer.parseInt(spaceIndexAndCarNum[0]);
 
@@ -68,13 +73,4 @@ public class ParkingLot implements Anchorable, Statistic, Printable {
         return availableSpacesNum > 0;
     }
 
-    @Override
-    public String print(int layerIndex) {
-        StringBuilder indentBuilder = new StringBuilder("\n");
-        while(layerIndex > 0) {
-            indentBuilder.append("\t");
-            layerIndex--;
-        }
-        return  indentBuilder.toString() + "P " + getAvailableSpacesNum() + " " + getParkedCarNum();
-    }
 }

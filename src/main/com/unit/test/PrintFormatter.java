@@ -1,5 +1,5 @@
 package com.unit.test;
 
 public interface PrintFormatter {
-    String format(Statistic data);
+    String format(int layerIndex, String s);
 }

@@ -20,6 +20,7 @@ public class ParkingLotTest {
         ParkingLot parkingLot = new ParkingLot(1);
         Car car = new Car("123");
         parkingLot.park(car);
+        System.out.println(car.getClass().getSimpleName());
 
         Car anotherCar = new Car("124");
         parkingLot.park(anotherCar);

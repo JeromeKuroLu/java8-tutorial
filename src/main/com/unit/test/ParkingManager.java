@@ -3,8 +3,8 @@ package com.unit.test;
 import java.util.Arrays;
 import java.util.List;
 
-public class ParkingManager implements Anchorable, Printable, Statistic {
-    List<Anchorable> anchorableList;
+public class ParkingManager implements Anchorable, Statistic {
+    private List<Anchorable> anchorableList;
 
     public ParkingManager(Anchorable... anchorables) {
         this.anchorableList = Arrays.asList(anchorables);
@@ -16,7 +16,7 @@ public class ParkingManager implements Anchorable, Printable, Statistic {
 
     @Override
     public String park(Car car) {
-        return anchorableList.stream().filter(a -> a.isAvailable()).findFirst().map(a -> a.park(car)).orElseThrow(NoAvailableParkingSpaceException::new);
+        return anchorableList.stream().filter(Anchorable::isAvailable).findFirst().map(a -> a.park(car)).orElseThrow(NoAvailableParkingSpaceException::new);
     }
 
     @Override
@@ -49,15 +49,9 @@ public class ParkingManager implements Anchorable, Printable, Statistic {
     }
 
     @Override
-    public String print(int layerIndex) {
-        StringBuilder indentBuilder = new StringBuilder("\n");
-        int nextLayerIndex = layerIndex + 1;
-        while(layerIndex > 0) {
-            indentBuilder.append("\t");
-            layerIndex--;
-        }
-        return  indentBuilder.toString() + "M " + getAvailableSpacesNum() + " " + getParkedCarNum()
-                + anchorableList.stream().map(a -> ((Printable) a).print(nextLayerIndex)).reduce((s1, s2) -> s1 + s2).orElse("");
+    public String getStatisticData() {
+        return "M " + getAvailableSpacesNum() + " " + getParkedCarNum() + SplitSignalConstant.MANAGER_INNER_SPLIT
+                + anchorableList.stream().map(a -> ((Statistic) a).getStatisticData()).reduce((s1, s2) -> s1 + s2).orElse("");
     }
 
 }

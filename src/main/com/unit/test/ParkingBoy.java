@@ -3,9 +3,10 @@ package com.unit.test;
 import java.util.List;
 import java.util.Objects;
 
-public class ParkingBoy implements Anchorable, Printable, Statistic {
+public class ParkingBoy implements Anchorable, Statistic {
     private List<ParkingLot> parkingLotList;
     private ParkingStrategy parkingStrategy;
+    private PrintFormatter formatter;
 
     public ParkingBoy(List<ParkingLot> parkingLotList, ParkingStrategy parkingStrategy) {
         this.parkingLotList = parkingLotList;
@@ -33,19 +34,7 @@ public class ParkingBoy implements Anchorable, Printable, Statistic {
 
     @Override
     public boolean isAvailable() {
-        return parkingLotList.stream().anyMatch(lot -> lot.isAvailable());
-    }
-
-    @Override
-    public String print(int layerIndex) {
-        StringBuilder indentBuilder = new StringBuilder("\n");
-        int nextLayerIndex = layerIndex + 1;
-        while(layerIndex > 0) {
-            indentBuilder.append("\t");
-            layerIndex--;
-        }
-        return  indentBuilder.toString() + "B " + getAvailableSpacesNum() + " " + getParkedCarNum()
-                + parkingLotList.stream().map(lot -> lot.print(nextLayerIndex)).reduce((s1, s2) -> s1 + s2).orElse("");
+        return parkingLotList.stream().anyMatch(Anchorable::isAvailable);
     }
 
     @Override
@@ -56,5 +45,26 @@ public class ParkingBoy implements Anchorable, Printable, Statistic {
     @Override
     public int getParkedCarNum() {
         return parkingLotList.stream().mapToInt(ParkingLot::getParkedCarNum).sum();
+    }
+
+    @Override
+    public String getStatisticData() {
+        String strategyFeature;
+        switch (parkingStrategy.getClass().getSimpleName()) {
+            case "ParkingStrategyImpl":
+                strategyFeature = "N";
+                break;
+            case "SmartParkingStrategyImpl":
+                strategyFeature = "Sm";
+                break;
+            case "SuperParkingStrategyImpl":
+                strategyFeature = "S";
+                break;
+            default:
+                strategyFeature = "";
+        }
+
+        return "B(" + strategyFeature + ") " + getAvailableSpacesNum() + " " + getParkedCarNum() + SplitSignalConstant.PARKING_BOY_SPLIT
+                + parkingLotList.stream().map(Statistic::getStatisticData).reduce((s1, s2) -> s1 + s2).orElse("");
     }
 }

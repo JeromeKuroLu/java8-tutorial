@@ -7,12 +7,13 @@ import java.util.Arrays;
 import static org.junit.Assert.*;
 
 public class ParkingDirectorTest {
+    private IndentFormatter indentFormatter = new IndentFormatter();
     @Test
     public void should_print_correct_info_given_a_parking_director_who_has_a_manager_with_an_empty_parking_lot_when_print() {
         ParkingManager parkingManager = new ParkingManager(new ParkingLot(1));
 
         ParkingDirector parkingDirector = new ParkingDirector(parkingManager);
-        String result = parkingDirector.print(0);
+        String result = parkingDirector.print(0, indentFormatter);
 
         assertEquals("\nM 1 0\n\tP 1 0", result);
     }
@@ -23,7 +24,7 @@ public class ParkingDirectorTest {
         parkingManager.park(new Car("123"));
 
         ParkingDirector parkingDirector = new ParkingDirector(parkingManager);
-        String result = parkingDirector.print(0);
+        String result = parkingDirector.print(0, indentFormatter);
 
         assertEquals("\nM 0 1\n\tP 0 1", result);
     }
@@ -36,9 +37,9 @@ public class ParkingDirectorTest {
         ParkingManager parkingManager = new ParkingManager(normalBoy, smartBoy, superBoy);
 
         ParkingDirector parkingDirector = new ParkingDirector(parkingManager);
-        String result = parkingDirector.print(0);
+        String result = parkingDirector.print(0, indentFormatter);
 
-        assertEquals("\nM 6 0\n\tB 3 0\n\t\tP 3 0\n\tB 2 0\n\t\tP 2 0\n\tB 1 0\n\t\tP 1 0", result);
+        assertEquals("\nM 6 0\n\tB(N) 3 0\n\t\tP 3 0\n\tB(Sm) 2 0\n\t\tP 2 0\n\tB(S) 1 0\n\t\tP 1 0", result);
     }
 
     @Test
@@ -50,9 +51,9 @@ public class ParkingDirectorTest {
         parkingManager.park(new Car("123"));
 
         ParkingDirector parkingDirector = new ParkingDirector(parkingManager);
-        String result = parkingDirector.print(0);
+        String result = parkingDirector.print(0, indentFormatter);
 
-        assertEquals("\nM 5 1\n\tB 2 1\n\t\tP 2 1\n\tB 2 0\n\t\tP 2 0\n\tB 1 0\n\t\tP 1 0", result);
+        assertEquals("\nM 5 1\n\tB(N) 2 1\n\t\tP 2 1\n\tB(Sm) 2 0\n\t\tP 2 0\n\tB(S) 1 0\n\t\tP 1 0", result);
     }
 
     @Test
@@ -65,9 +66,9 @@ public class ParkingDirectorTest {
         ParkingManager parkingManager = new ParkingManager(firstLot, normalBoy, smartBoy, superBoy, lastLot);
 
         ParkingDirector parkingDirector = new ParkingDirector(parkingManager);
-        String result = parkingDirector.print(0);
+        String result = parkingDirector.print(0, indentFormatter);
 
-        assertEquals("\nM 9 0\n\tP 1 0\n\tB 3 0\n\t\tP 3 0\n\tB 2 0\n\t\tP 2 0\n\tB 1 0\n\t\tP 1 0\n\tP 2 0", result);
+        assertEquals("\nM 9 0\n\tP 1 0\n\tB(N) 3 0\n\t\tP 3 0\n\tB(Sm) 2 0\n\t\tP 2 0\n\tB(S) 1 0\n\t\tP 1 0\n\tP 2 0", result);
     }
 
     @Test
@@ -83,8 +84,8 @@ public class ParkingDirectorTest {
         parkingManager.park(new Car("332"));
 
         ParkingDirector parkingDirector = new ParkingDirector(parkingManager);
-        String result = parkingDirector.print(0);
+        String result = parkingDirector.print(0, indentFormatter);
 
-        assertEquals("\nM 6 3\n\tP 0 1\n\tB 1 2\n\t\tP 1 2\n\tB 2 0\n\t\tP 2 0\n\tB 1 0\n\t\tP 1 0\n\tP 2 0", result);
+        assertEquals("\nM 6 3\n\tP 0 1\n\tB(N) 1 2\n\t\tP 1 2\n\tB(Sm) 2 0\n\t\tP 2 0\n\tB(S) 1 0\n\t\tP 1 0\n\tP 2 0", result);
     }
 }
